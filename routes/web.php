@@ -1,12 +1,17 @@
 <?php
+
 use App\Http\Controllers\Admin\CsvController;
 use App\Http\Controllers\Admin\MaestroController;
 use App\Http\Controllers\Admin\MateriaController;
 use App\Http\Controllers\Admin\GradoController;
 use App\Http\Controllers\Admin\EstudianteController;
+use App\Http\Controllers\Admin\PadreController;
 use App\Http\Controllers\Admin\CalendarioController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TutorController;
 use App\Models\Calendario;
+use App\Models\Padre;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,10 +24,11 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return view('admin.dashboard');
     })->name('dashboard');
 });
-Route::resource('estudiantes', EstudianteController::class);
+
+
 Route::get('/admin/estudiantes/import', [EstudianteController::class, 'import'])->name('admin.estudiantes.import');
 Route::post('/admin/estudiantes/import', [EstudianteController::class, 'import'])->name('admin.estudiantes.import');
 Route::get('/admin/estudiantes/imports', [EstudianteController::class, 'imports'])->name('admin.estudiantes.imports');

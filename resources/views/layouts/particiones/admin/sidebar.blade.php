@@ -8,6 +8,28 @@
             'active' => request()->routeIs('admin.dashboard'),
         ],
         [
+            //Usuario
+            'name' => 'Roles',
+            'icon' => 'fa-solid fa-users',
+            'route' => route('admin.roles.index'),
+            'active' => request()->routeIs('admin.role.*'),
+        ],
+        [
+            //Usuario
+            'name' => 'Permisos',
+            'icon' => 'fa-solid fa-users',
+            'route' => route('admin.permissions.index'),
+            'active' => request()->routeIs('admin.permission.*'),
+        ],
+        [
+            //Usuario
+            'name' => 'Usuarios',
+            'icon' => 'fa-solid fa-users',
+            'route' => route('admin.users.index'),
+            'active' => request()->routeIs('admin.user.*'),
+        ],
+
+        [
             //Maestros
             'name' => 'Maestros',
             'icon' => 'fa-solid fa-users',
@@ -28,12 +50,7 @@
             'route' => route('admin.grados.index'),
             'active' => request()->routeIs('admin.grados.*'),
         ],
-        /*             //Tutores
-            'name' => 'Padres',
-            'icon' => 'fa-solid fa-graduation-cap',
-            'route' => route('admin.tutores.index'),
-            'active' => request()->routeIs('admin.tutores.*'),
-        ], */
+
         [
             //Estudiantes
             'name' => 'Estudiantes',

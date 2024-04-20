@@ -10,6 +10,7 @@ use App\Models\Tutor;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -19,19 +20,37 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        $role = Role::create(['name' => 'admin']);
+        //User::factory(10)->create();
+        // $role = Role::create(['name' => 'admin']);
+
+
+        $this->call([MaestroSeeder::class]);
+        $this->call([MateriaSeeder::class]);
+        $this->call([GradoSeeder::class]);
+        $this->call([CalendarioSeeder::class]);
+        $this->call([MateriaGradoSeeder::class]);
+        $this->call([PadreSeeder::class]);
+        $this->call([RoleSeeder::class]);
+        $this->call([UserSeeder::class]);
+
+        //Estudiante::factory(11)->create();
+
+        /* $role = Role::create(['name' => 'admin']);
+        // Permisos para el recurso 'maestros'
         User::factory()->create([
-            'name' => 'Administrador Will',
+            'name' => 'Administradorl',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('12345678'),
-        ]);
-        $this->call([MaestroSeeder::class,]);
-        $this->call([MateriaSeeder::class,]);
-        $this->call([GradoSeeder::class,]);
-        $this->call([CalendarioSeeder::class,]);
-        $this->call([MateriaGradoSeeder::class,]);
-        $this->call([PadreSeeder::class,]);
-        //Estudiante::factory(11)->create();
+        ])->assignRole('admin');
+        User::create([
+            'name' => 'Will',
+            'email' => 'will@gmail.com',
+            'password' => bcrypt('12345678'),
+        ])->assignRole('Maestro');
+        User::create([
+            'name' => 'Willder',
+            'email' => 'will234@gmail.com',
+            'password' => bcrypt('12345678'),
+        ])->assignRole('Estudiante'); */
     }
 }

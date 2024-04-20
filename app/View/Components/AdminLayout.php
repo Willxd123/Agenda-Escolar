@@ -13,7 +13,7 @@ class AdminLayout extends Component
      */
     public function __construct()
     {
-        //
+        
     }
 
     /**

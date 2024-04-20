@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Maestro;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-class MaestroController extends Controller
+
+class MaestroController extends Controller 
 {
-    /**
-     * Display a listing of the resource.
-     */
+ 
     public function index()
     {
         $maestros = Maestro::orderBy('id', 'desc')->paginate(10);
@@ -28,14 +29,35 @@ class MaestroController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required'
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'telefono' => 'required',
+            'ci' => 'required|digits_between:1,7', // Validación para el campo ci
         ]);
-        Maestro::create($request->all());
+
+        $nombre = strtolower($request->nombre);
+        $apellido = strtolower($request->apellido);
+
+        $correo = $nombre . '.' . $apellido . '@tusitio.com'; // Genera un correo único
+        $contrasena = 'tucontraseña'; // Establece una contraseña predeterminada
+
+        $maestro = Maestro::create([
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'telefono' => $request->telefono,
+            'ci' => $request->ci, // Asigna el valor del campo ci
+            'correo' => $correo,
+            'contrasena' => $contrasena,
+        ]);
+
         return redirect()->route('admin.maestros.index');
     }
+
+
 
     /**
      * Display the specified resource.
@@ -44,7 +66,7 @@ class MaestroController extends Controller
     {
         //
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -57,8 +79,7 @@ class MaestroController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Maestro $maestro)
-    {
-        {
+    { {
             $request->validate([
                 'nombre' => 'required'
             ]);

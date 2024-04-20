@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,11 @@ class Grado extends Model
     //relacion muchos a muchos 
     public function materias(): BelongsToMany
     {
-        return $this->belongsToMany(Materia::class,'materia_grado');
+        return $this->belongsToMany(Materia::class, 'materia_grado');
+    }
+    //relacion muchos a muchos 
+    public function calendarios(): BelongsToMany
+    {
+        return $this->belongsToMany(Calendario::class, 'calendario_grado');
     }
 }

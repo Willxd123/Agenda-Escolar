@@ -38,7 +38,7 @@ class PadreController extends Controller
             'telefono' => 'required',
         ]);
         Padre::create($request->all());
-        return redirect()->route('admin.padres.index');
+        
     }
 
     /**

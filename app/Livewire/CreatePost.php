@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Calendario;
+use App\Models\Grado;
+use App\Models\Materia;
 use Livewire\WithFileUploads;
 use Carbon\Carbon;
 
@@ -13,11 +15,11 @@ class CreatePost extends Component
 
     public function render()
     {
+
         $calendarios = Calendario::all()->map(function ($calendario) {
             $now = Carbon::now();
             $inicio = Carbon::parse($calendario->fecha_inicio);
             $fin = Carbon::parse($calendario->fecha_fin);
-
             if ($now->gt($fin)) {
                 $calendario->estado = 'atrasado';
             } elseif ($now->gte($inicio) && $now->lte($fin)) {
@@ -25,10 +27,10 @@ class CreatePost extends Component
             } else {
                 $calendario->estado = 'entregado';
             }
-
             return $calendario;
         });
-
-        return view('livewire.create-post', compact('calendarios'));
+        $grados = Grado::all();
+        $materias = Materia::all();
+        return view('livewire.create-post', compact('calendarios', 'grados','materias'));
     }
 }

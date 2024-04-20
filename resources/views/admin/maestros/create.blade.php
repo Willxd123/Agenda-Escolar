@@ -29,6 +29,12 @@
             </div>
             <div>
                 <x-label class="mb-3">
+                    CI
+                </x-label>
+                <x-input class="w-full" placeholder="Ingrese el carnet de identidad" name="ci" value="{{ old('ci') }}"/>
+            </div>
+            <div>
+                <x-label class="mb-3">
                     Telefono
                 </x-label>
                 <x-input class="w-full" placeholder="Ingrese el teléfono" name="telefono" value="{{ old('telefono') }}"/>

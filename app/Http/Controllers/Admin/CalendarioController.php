@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Calendario;
+use App\Models\Grado;
+use App\Models\Materia;
 use Illuminate\Http\Request;
 
 class CalendarioController extends Controller
@@ -67,7 +69,7 @@ public function actividad(Request $request)
 }
 
     
-    public function store(Request $request)
+    public function store(Request $request,Grado $grado, Materia $materia)
     {
         // Validar los datos del formulario
         $request->validate([
@@ -79,52 +81,29 @@ public function actividad(Request $request)
         ]);
 
         // Crear un nuevo evento en la base de datos
-        $evento = Calendario::create([
+        $calendario = Calendario::create([
             'evento' => $request->evento,
             'fecha_inicio' => $request->fecha_inicio,
             'fecha_fin' => $request->fecha_fin,
             'descripcion' => $request->descripcion,
         ]);
-
-        // Manejar la carga de archivo, si se proporcionó
-        if ($request->hasFile('archivo')) {
-            $archivo = $request->file('archivo');
-            $nombreArchivo = $archivo->getClientOriginalName(); // Obtener el nombre del archivo
-            $rutaArchivo = $archivo->store('archivos'); // Guardar el archivo en el almacenamiento
-
-            // Actualizar el evento con el nombre del archivo y la ruta
-            $evento->update([
-                'archivo' => $nombreArchivo,
-                'ruta_archivo' => $rutaArchivo,
-            ]);
+        $grados = Grado::all();
+        $materias = Materia::all();
+        if ($request->has('grados')) {
+            $calendario->grados()->sync($request->grados);
+        }
+        if ($request->has('materias')) {
+            $grado->materias()->sync($request->materias);
         }
 
         session()->flash('swal', [
             'icon' => 'success',
             'title' => 'Bien Hecho',
-            'text' => 'Evento creado correctamente.'
+            'text' => 'Actividad creado correctamente.'
         ]);
 
         // Redirigir a la página de índice del calendario con un mensaje de éxito
         return redirect()->route('admin.calendarios.index')->with('success', 'Evento agregado exitosamente.');
-
-
-        // Validar los datos del formulario
-        //  $request->validate([
-        //      'evento' => 'required|string',
-        //      'fecha_inicio' => 'required|date',
-        //      'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
-        //  ]);
-        //  
-        //  Crear un nuevo evento en la base de datos
-        //  Calendario::create($request->all());
-        //  session()->flash('swal',[
-        //      'icon'=> 'success',
-        //     'text' => 'Familia creada correctamente.'
-        // ]);
-
-        // Redirigir a la página de índice del calendario con un mensaje de éxito
-        // return redirect()->route('admin.calendarios.index')->with('success', 'Evento agregado exitosamente.');
     }
 
     /**

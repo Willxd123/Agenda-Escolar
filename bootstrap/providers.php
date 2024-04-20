@@ -5,4 +5,5 @@ return [
     App\Providers\FortifyServiceProvider::class,
     App\Providers\JetstreamServiceProvider::class,
     Maatwebsite\Excel\ExcelServiceProvider::class,
+    Spatie\Permission\PermissionServiceProvider::class,
 ];

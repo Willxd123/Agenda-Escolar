@@ -9,11 +9,14 @@ class Maestro extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'ci',
         'nombre',
         'apellido',
         'telefono',
-        
+        'correo', // Agregar campo de correo
+        'contrasena', // Agregar campo de contraseña
     ];
+
 
     //relacion muchos a muchos 
     public function materias():BelongsToMany

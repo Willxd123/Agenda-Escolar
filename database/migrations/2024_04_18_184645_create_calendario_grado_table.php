@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('maestros', function (Blueprint $table) {
+        Schema::create('calendario_grado', function (Blueprint $table) {
             $table->id();
-            $table->integer('ci');
-            $table->string('nombre');
-            $table->string('apellido');
-            $table->integer('telefono');
-            $table->string('correo')->unique(); // Nuevo campo de correo
-            $table->string('contrasena'); // Nuevo campo de contraseña
+            $table->foreignId('calendario_id')
+            ->constrained();
+            $table->foreignId('grado_id')
+            ->constrained();
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('maestros');
+        Schema::dropIfExists('calendario_grado');
     }
 };

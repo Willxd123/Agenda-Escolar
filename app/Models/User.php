@@ -64,4 +64,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+
 }
