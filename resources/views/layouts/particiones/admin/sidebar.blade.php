@@ -4,29 +4,16 @@
         [
             'name' => 'Dashboard',
             'icon' => 'fa-solid fa-gauge',
-            'route' => route('admin.dashboard'),
-            'active' => request()->routeIs('admin.dashboard'),
+            'route' => route('dashboard'),
+            'active' => request()->routeIs('dashboard'),
+            'permission' => 'admin.dashboard', // Permiso requerido para ver el dashboard
         ],
         [
-            //Usuario
-            'name' => 'Roles',
-            'icon' => 'fa-solid fa-users',
-            'route' => route('admin.roles.index'),
-            'active' => request()->routeIs('admin.role.*'),
-        ],
-        [
-            //Usuario
-            'name' => 'Permisos',
-            'icon' => 'fa-solid fa-users',
-            'route' => route('admin.permissions.index'),
-            'active' => request()->routeIs('admin.permission.*'),
-        ],
-        [
-            //Usuario
             'name' => 'Usuarios',
             'icon' => 'fa-solid fa-users',
             'route' => route('admin.users.index'),
-            'active' => request()->routeIs('admin.user.*'),
+            'active' => request()->routeIs('admin.users.*'),
+            'permission' => 'admin.users.index', // Permiso requerido para ver la lista de usuarios
         ],
 
         [
@@ -35,6 +22,7 @@
             'icon' => 'fa-solid fa-users',
             'route' => route('admin.maestros.index'),
             'active' => request()->routeIs('admin.maestros.*'),
+            'permission' => 'admin.maestros.index',
         ],
         [
             //Materias
@@ -42,6 +30,7 @@
             'icon' => 'fa-solid fa-book',
             'route' => route('admin.materias.index'),
             'active' => request()->routeIs('admin.materias.*'),
+            'permission' => 'admin.materias.index',
         ],
         [
             //Grados
@@ -49,6 +38,7 @@
             'icon' => 'fa-solid fa-door-open',
             'route' => route('admin.grados.index'),
             'active' => request()->routeIs('admin.grados.*'),
+            'permission' => 'admin.grados.index',
         ],
 
         [
@@ -57,6 +47,7 @@
             'icon' => 'fa-solid fa-graduation-cap',
             'route' => route('admin.estudiantes.index'),
             'active' => request()->routeIs('admin.estudiantes.*'),
+            'permission' => 'admin.estudiantes.index',
         ],
         [
             //Padres
@@ -64,6 +55,7 @@
             'icon' => 'fa-solid fa-graduation-cap',
             'route' => route('admin.padres.index'),
             'active' => request()->routeIs('admin.padres.*'),
+            'permission' => 'admin.padres.index',
         ],
         [
             //Clendarios
@@ -71,6 +63,7 @@
             'icon' => 'fa-solid fa-graduation-cap',
             'route' => route('admin.calendarios.index'),
             'active' => request()->routeIs('admin.calendarios.*'),
+            'permission' => 'admin.calendarios.index',
         ],
     ];
 @endphp
@@ -88,7 +81,7 @@
             <!-- declaracion de foreachs-->
             @foreach ($links as $link)
                 <!-- gregar botones y estilos-->
-
+                @can($link['permission'])
                 <!--boton inicio-->
                 <li>
                     <a href="{{ $link['route'] }}"
@@ -104,6 +97,7 @@
                         </span>
                     </a>
                 </li>
+                @endcan
             @endforeach
 
         </ul>

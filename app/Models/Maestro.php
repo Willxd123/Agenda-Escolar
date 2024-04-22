@@ -23,4 +23,9 @@ class Maestro extends Model
     {
         return $this->belongsToMany(Materia::class,'materia_maestro');
     }
+    //relacion uno a une
+    public function user()
+    {
+        return $this->belongsToo(User::class);
+    }
 }

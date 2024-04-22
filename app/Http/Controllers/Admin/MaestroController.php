@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 
-class MaestroController extends Controller 
+class MaestroController extends Controller
 {
- 
+
     public function index()
     {
         $maestros = Maestro::orderBy('id', 'desc')->paginate(10);
@@ -30,29 +30,40 @@ class MaestroController extends Controller
      * Store a newly created resource in storage.
      */
 
+
     public function store(Request $request)
     {
         $request->validate([
             'nombre' => 'required',
             'apellido' => 'required',
             'telefono' => 'required',
-            'ci' => 'required|digits_between:1,7', // Validación para el campo ci
+            'ci' => 'required|digits_between:1,7',
         ]);
 
-        $nombre = strtolower($request->nombre);
-        $apellido = strtolower($request->apellido);
-
-        $correo = $nombre . '.' . $apellido . '@tusitio.com'; // Genera un correo único
-        $contrasena = 'tucontraseña'; // Establece una contraseña predeterminada
+        $correo = strtolower($request->nombre) . '.' . strtolower($request->apellido) . '@tusitio.com';
+        $contrasena = $request->ci; // Utiliza el CI como contraseña
 
         $maestro = Maestro::create([
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
             'telefono' => $request->telefono,
-            'ci' => $request->ci, // Asigna el valor del campo ci
+            'ci' => $request->ci,
             'correo' => $correo,
             'contrasena' => $contrasena,
         ]);
+
+        // Crea el usuario correspondiente al maestro
+        $user = User::create([
+            'name' => $maestro->nombre,
+            'email' => $correo,
+            'password' => bcrypt($contrasena), // Encripta la contraseña
+        ]);
+
+        // Asigna el rol de "Maestro" al usuario
+        $user->assignRole('Maestro');
+
+        // Guarda el usuario asociado al maestro
+       
 
         return redirect()->route('admin.maestros.index');
     }

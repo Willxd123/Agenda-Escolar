@@ -70,5 +70,9 @@ class User extends Authenticatable
      *
      * @return string
      */
-
+    //relacion uno a une
+    public function maestro()
+    {
+        return $this->hasOne(Maestro::class);
+    }
 }

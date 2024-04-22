@@ -19,6 +19,10 @@ return new class extends Migration
             $table->integer('telefono');
             $table->string('correo')->unique(); // Nuevo campo de correo
             $table->string('contrasena'); // Nuevo campo de contraseña
+            $table->unsignedBigInteger('user_id')->unique();
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
             $table->timestamps();
         });
     }

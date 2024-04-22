@@ -24,8 +24,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        $user = User::all();
         $roles = Role::all();
-        return view('admin.users.create', compact('roles'));
+        return view('admin.users.create', ['roles' => $roles]);
     }
     /**
      * Store a newly created resource in storage.
@@ -34,17 +35,23 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'roles' => 'array',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'roles' => 'required|array', // Asegúrate de que se envíen roles
         ]);
 
+        // Crea el usuario
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
         $user->assignRole($request->role);
-        // Sincronizar los roles seleccionados
-        //$user->roles()->sync($request->roles);
+        // Asigna roles al usuario
+        if ($request->has('roles')) {
+            $user->syncRoles($request->roles);
+        }
 
         session()->flash('swal', [
             'icon' => 'success',
@@ -54,6 +61,9 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index');
     }
+
+
+
 
 
     /**
@@ -69,6 +79,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+
         $roles = Role::all();
         return view('admin.users.edit', compact('user', 'roles'));
     }
@@ -78,21 +89,47 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->roles()->sync($request->roles);
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|min:6', // Permitir que la contraseña sea opcional
+            'roles' => 'required|array', // Asegúrate de que se envíen roles
+        ]);
+    
+        // Actualiza los datos del usuario
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password ? Hash::make($request->password) : $user->password,
+        ]);
+    
+        // Asigna roles al usuario
+        $user->syncRoles($request->roles);
+    
         session()->flash('swal', [
             'icon' => 'success',
-            'title' => 'Excelente',
-            'text' => 'El usuario fue actualizado Exitoso',
+            'title' => '¡Bien hecho!',
+            'text' => 'Usuario actualizado exitosamente.'
         ]);
-
-        return redirect()->route('admin.users.index', $user);
+    
+        return redirect()->route('admin.users.index');
     }
+    
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
     {
-        //
+       
+        $user->roles()->detach();
+        $user->delete(); 
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => '¡Bien hecho!',
+            'text' => 'Usuario eliminada correctamente.'
+        ]);
+        return redirect()->route('admin.users.index' );
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Routing\Route;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -14,8 +15,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::create(['name' => 'admin']);
-        $admin = Role::create(['name' => 'Admin']);
+        $role = Role::create(['name' => 'Admin']);
+        $admin = Role::create(['name' => 'admin']);
         $maestro = Role::create(['name' => 'Maestro']);
         $estudiante = Role::create(['name' => 'Estudiante']);
 
@@ -59,13 +60,13 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'admin.estudiantes.destroy'])->syncRoles([$admin]);
 
         // Permiso para Calendarios
-        Permission::create(['name' => 'admin.calendarios.index'])->syncRoles([$admin]);
-        Permission::create(['name' => 'admin.calendarios.create'])->syncRoles([$admin]);
-        Permission::create(['name' => 'admin.calendarios.show'])->syncRoles([$admin]);
-        Permission::create(['name' => 'admin.calendarios.store'])->syncRoles([$admin]);
-        Permission::create(['name' => 'admin.calendarios.edit'])->syncRoles([$admin]);
-        Permission::create(['name' => 'admin.calendarios.update'])->syncRoles([$admin]);
-        Permission::create(['name' => 'admin.calendarios.destroy'])->syncRoles([$admin]);
+        Permission::create(['name' => 'admin.calendarios.index'])->syncRoles([$admin, $maestro]);
+        Permission::create(['name' => 'admin.calendarios.create'])->syncRoles([$admin, $maestro]);
+        Permission::create(['name' => 'admin.calendarios.show'])->syncRoles([$admin, $maestro]);
+        Permission::create(['name' => 'admin.calendarios.store'])->syncRoles([$admin, $maestro]);
+        Permission::create(['name' => 'admin.calendarios.edit'])->syncRoles([$admin, $maestro]);
+        Permission::create(['name' => 'admin.calendarios.update'])->syncRoles([$admin, $maestro]);
+        Permission::create(['name' => 'admin.calendarios.destroy'])->syncRoles([$admin, $maestro]);
 
         // Permiso para Padres
         Permission::create(['name' => 'admin.padres.index'])->syncRoles([$admin]);
@@ -77,7 +78,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'admin.padres.destroy'])->syncRoles([$admin]);
 
         // Permiso para Usuarios
-        Permission::create(['name' => 'admin.users.index'])->syncRoles([$admin]);
+        Permission::create(['name' => 'admin.users.index'])->syncRoles([$admin,$maestro]);
         Permission::create(['name' => 'admin.users.create'])->syncRoles([$admin]);
         Permission::create(['name' => 'admin.users.show'])->syncRoles([$admin]);
         Permission::create(['name' => 'admin.users.store'])->syncRoles([$admin]);
